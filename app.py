@@ -1,4 +1,3 @@
-اعتذر عن الانقطاع، هذا الكود الكامل اللي تحتاجه، قم بنسخه ولصقه:
 import streamlit as st
 import os
 import requests
