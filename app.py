@@ -21,14 +21,36 @@ else:
 st.header("إعدادات التوليد")
 model = st.selectbox("اختر النموذج", ["Kling AI", "Luma Dream Machine"])
 aspect_ratio = st.selectbox("مقاس الفيديو", ["9:16 (Reels/TikTok)", "16:9 (YouTube)"])
-prompt = st.text_area("أدخل الوصف (Prompt) لتوليد المشهد", placeholder="مثال: أم عراقية طيبة في الخمسينات من عمرها، ترتدي عباية تقليدية، تجلس في مقهي شعبي عراقي، تبتسم بحماس وتتحدث مع ابنها بخفة دم")
+prompt = st.text_area("أدخل الوصف (Prompt) لتوليد المشهد", placeholder="مثال...")
 
 if st.button("توليد الفيديو"):
     if prompt:
         if not kling_api_key:
-            st.error("غير موجود في إعدادات التطبيق (Secrets) API مفتاح الـ Kling AI")
+            st.error("مفتاح الـ Kling AI غير موجود في إعدادات التطبيق.")
         else:
-            st.write(f"جاري توليد الفيديو لمشروع {project_type} باستخدام {model}...")
-            st.write("ملاحظة: هنا سنضع الكود الخاص بالاتصال بـ API Kling")
+            st.write(f"جاري توليد الفيديو لمشروع {project_type}...")
+            
+            # كود الاتصال بـ API Kling
+            url = "https://api.klingai.com/v1/videos/text-to-video"
+            headers = {
+                "Authorization": f"Bearer {kling_api_key}",
+                "Content-Type": "application/json"
+            }
+            data = {
+                "prompt": prompt,
+                "aspect_ratio": "9:16" if aspect_ratio.startswith("9:16") else "16:9",
+                "model": "kling-v1"
+            }
+            
+            try:
+                response = requests.post(url, headers=headers, json=data)
+                if response.status_code == 200:
+                    st.success("تم إرسال طلب توليد الفيديو بنجاح!")
+                    st.json(response.json())
+                else:
+                    st.error(f"خطأ في الاتصال: {response.status_code}")
+                    st.text(response.text)
+            except Exception as e:
+                st.error(f"حدث خطأ: {e}")
     else:
         st.warning("يرجى كتابة الوصف أولاً.")
