@@ -31,7 +31,7 @@ if st.button("توليد الفيديو"):
             st.write(f"جاري توليد الفيديو لمشروع {project_type}...")
             
             # كود الاتصال بـ API Kling
-            url = "https://api.klingai.com/v1/videos/text-to-video"
+            url = "https://api.klingai.com/v1/videos/text2video"
             headers = {
                 "Authorization": f"Bearer {kling_api_key}",
                 "Content-Type": "application/json"
