@@ -30,7 +30,6 @@ if st.button("توليد الفيديو"):
         else:
             st.write(f"جاري توليد الفيديو لمشروع {project_type}...")
             
-            # كود الاتصال بـ API Kling
             url = "https://api.klingai.com/v1/videos/text2video"
             headers = {
                 "Authorization": f"Bearer {kling_api_key}",
@@ -39,7 +38,8 @@ if st.button("توليد الفيديو"):
             data = {
                 "prompt": prompt,
                 "aspect_ratio": "9:16" if aspect_ratio.startswith("9:16") else "16:9",
-                "model": "kling-v1"
+                "model": "kling-v1",
+                "mode": "professional"
             }
             
             try:
